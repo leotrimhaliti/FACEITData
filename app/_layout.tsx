@@ -10,7 +10,7 @@ import { useColorScheme } from '@/components/useColorScheme';
 
 export {
   // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
+  ErrorBoundary
 } from 'expo-router';
 
 export const unstable_settings = {
@@ -21,11 +21,15 @@ export const unstable_settings = {
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
+import { AnimatedSplashScreen } from '@/components/AnimatedSplashScreen';
+import { useState } from 'react';
+
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome.font,
   });
+  const [splashAnimationFinished, setSplashAnimationFinished] = useState(false);
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
@@ -42,7 +46,16 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return (
+    <>
+      {!splashAnimationFinished && (
+        <AnimatedSplashScreen
+          onAnimationFinish={() => setSplashAnimationFinished(true)}
+        />
+      )}
+      <RootLayoutNav />
+    </>
+  );
 }
 
 function RootLayoutNav() {
