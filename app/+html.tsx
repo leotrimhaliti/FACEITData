@@ -11,6 +11,10 @@ export default function Root({ children }: { children: React.ReactNode }) {
         <meta charSet="utf-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        
+        <title>FACEITData - Your CS2 Stats, Clean Mode</title>
+        <meta name="description" content="Track your FACEIT CS2 statistics, match history, and performance. Download now on iOS and Android." />
+        <link rel="icon" type="image/png" href="/favicon.png" />
 
         {/* 
           Disable body scrolling on web. This makes ScrollView components work closer to how they do on native. 

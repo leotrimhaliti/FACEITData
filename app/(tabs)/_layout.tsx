@@ -1,6 +1,7 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
 import React from 'react';
+import { Platform } from 'react-native';
 
 import { useClientOnlyValue } from '@/components/useClientOnlyValue';
 import { useColorScheme } from '@/components/useColorScheme';
@@ -16,6 +17,7 @@ function TabBarIcon(props: {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const isWeb = Platform.OS === 'web';
 
   return (
     <Tabs
@@ -24,7 +26,8 @@ export default function TabLayout() {
         // Disable the static render of the header on web
         // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true),
-        tabBarStyle: {
+        // Hide tab bar on web
+        tabBarStyle: isWeb ? { display: 'none' } : {
           backgroundColor: Colors[colorScheme ?? 'light'].background,
           borderTopColor: Colors[colorScheme ?? 'light'].gridLine,
         },
@@ -45,6 +48,8 @@ export default function TabLayout() {
         name="favorites"
         options={{
           title: 'Favorites',
+          // Hide favorites tab on web since we're showing promo section instead
+          href: isWeb ? null : '/favorites',
           tabBarIcon: ({ color }) => <TabBarIcon name="star" color={color} />,
         }}
       />

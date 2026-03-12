@@ -115,15 +115,51 @@ export const FaceitService = {
         }
     },
 
-    getHistory: async (playerId: string) => {
+    /**
+     * Fetches all match history for a player using pagination.
+     * The FACEIT API has a max limit of 100 per request.
+     */
+    getHistory: async (playerId: string, options?: { limit?: number }) => {
         try {
-            const response = await api.get(`/players/${playerId}/games/cs2/stats`, {
-                params: { limit: 20 }
-            });
+            const allMatches: any[] = [];
+            const pageSize = 100; // Max allowed by FACEIT API
+            let offset = 0;
+            let hasMore = true;
+            const maxMatches = options?.limit; // Optional limit, undefined = fetch all
 
-            const parsed = HistoryResponseSchema.parse(response.data);
+            while (hasMore) {
+                const response = await api.get(`/players/${playerId}/games/cs2/stats`, {
+                    params: { 
+                        limit: pageSize,
+                        offset 
+                    }
+                });
 
-            return parsed.items.map((item) => {
+                const parsed = HistoryResponseSchema.parse(response.data);
+                const items = parsed.items;
+
+                if (items.length === 0) {
+                    hasMore = false;
+                } else {
+                    allMatches.push(...items);
+                    offset += pageSize;
+
+                    // Stop if we've reached the optional limit
+                    if (maxMatches && allMatches.length >= maxMatches) {
+                        hasMore = false;
+                    }
+
+                    // Stop if we got fewer items than requested (last page)
+                    if (items.length < pageSize) {
+                        hasMore = false;
+                    }
+                }
+            }
+
+            // Trim to exact limit if specified
+            const finalMatches = maxMatches ? allMatches.slice(0, maxMatches) : allMatches;
+
+            return finalMatches.map((item) => {
                 const stats = item.stats;
                 const isWin = stats.Result === '1';
                 const matchDate = new Date(stats['Created At']);
@@ -144,7 +180,7 @@ export const FaceitService = {
                 };
             });
         } catch (error) {
-            // For history, we might want to return empty array instead of throwing to show partial profile
+            // For history, return empty array to show partial profile
             console.error('Error fetching history:', error);
             return [];
         }

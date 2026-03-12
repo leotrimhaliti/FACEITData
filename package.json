@@ -6,7 +6,8 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "build:web": "expo export -p web && node -e \"require('fs').copyFileSync('public/favicon.png', 'dist/favicon.png')\""
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
@@ -23,6 +24,7 @@
     "expo-splash-screen": "~31.0.11",
     "expo-status-bar": "~3.0.8",
     "expo-web-browser": "~15.0.9",
+    "html-to-image": "^1.11.13",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-native": "0.81.5",
