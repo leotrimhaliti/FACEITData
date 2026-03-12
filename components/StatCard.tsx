@@ -27,7 +27,7 @@ export function StatCard({
   trend,
 }: StatCardProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const { isDesktop } = useResponsive();
+  const { isDesktop, isMobile } = useResponsive();
   const isWeb = Platform.OS === 'web';
 
   const accentColor = color || Colors.dark.faceitOrange;
@@ -56,6 +56,7 @@ export function StatCard({
     <Pressable
       style={({ pressed }) => [
         styles.container,
+        isWeb && isMobile && styles.containerMobile,
         isWeb && isDesktop && styles.containerDesktop,
         isWeb && isHovered && styles.containerHovered,
         pressed && styles.containerPressed,
@@ -63,17 +64,17 @@ export function StatCard({
       onHoverIn={() => setIsHovered(true)}
       onHoverOut={() => setIsHovered(false)}
     >
-      <View style={styles.header}>
+      <View style={[styles.header, isWeb && isMobile && styles.headerMobile]}>
         <View style={styles.labelContainer}>
           {icon && (
             <Ionicons 
               name={icon} 
-              size={14} 
+              size={isMobile ? 12 : 14} 
               color={Colors.dark.textMuted} 
               style={styles.icon}
             />
           )}
-          <Text style={styles.label}>{label}</Text>
+          <Text style={[styles.label, isWeb && isMobile && styles.labelMobile]}>{label}</Text>
         </View>
         {trendIcon && (
           <Ionicons 
@@ -84,8 +85,8 @@ export function StatCard({
         )}
       </View>
 
-      <View style={styles.valueContainer}>
-        <Text style={[styles.value, { color: accentColor }]}>{value}</Text>
+      <View style={[styles.valueContainer, isWeb && isMobile && styles.valueContainerMobile]}>
+        <Text style={[styles.value, isWeb && isMobile && styles.valueMobile, { color: accentColor }]}>{value}</Text>
         {subValue && <Text style={styles.subValue}>{subValue}</Text>}
       </View>
 
@@ -127,6 +128,12 @@ const styles = StyleSheet.create({
     position: 'relative',
     overflow: 'hidden',
   },
+  containerMobile: {
+    padding: 12,
+    margin: 4,
+    borderRadius: 10,
+    minWidth: 80,
+  },
   containerDesktop: {
     padding: 24,
     margin: 0,
@@ -148,6 +155,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 8,
   },
+  headerMobile: {
+    marginBottom: 6,
+  },
   labelContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -162,13 +172,22 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
+  labelMobile: {
+    fontSize: 9,
+  },
   valueContainer: {
     marginBottom: 12,
+  },
+  valueContainerMobile: {
+    marginBottom: 8,
   },
   value: {
     fontSize: 28,
     fontWeight: '700',
     letterSpacing: -0.5,
+  },
+  valueMobile: {
+    fontSize: 22,
   },
   subValue: {
     fontSize: 12,

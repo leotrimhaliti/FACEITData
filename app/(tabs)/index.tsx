@@ -52,7 +52,7 @@ export default function TabOneScreen() {
   const [clickedStore, setClickedStore] = useState<'apple' | 'google' | null>(null);
   const scrollViewRef = useRef<ScrollView>(null);
   const router = useRouter();
-  const { isDesktop, isTablet } = useResponsive();
+  const { isDesktop, isTablet, isMobile } = useResponsive();
   const isWeb = Platform.OS === 'web';
 
   // Set page title on web
@@ -100,44 +100,65 @@ export default function TabOneScreen() {
           showsVerticalScrollIndicator={false}
         >
           {/* Search Section */}
-          <View style={[styles.searchSection, isDesktop && styles.searchSectionDesktop]}>
+          <View style={[
+            styles.searchSection, 
+            isMobile && styles.searchSectionMobile,
+            isDesktop && styles.searchSectionDesktop
+          ]}>
             {/* Logo */}
             <View style={[styles.logoSection, isDesktop && styles.logoSectionDesktop]}>
               <Image
                 source={require('../../assets/images/logo.png')}
-                style={[styles.logo, isDesktop && styles.logoDesktop]}
+                style={[
+                  styles.logo, 
+                  isMobile && styles.logoMobile,
+                  isDesktop && styles.logoDesktop
+                ]}
                 resizeMode="contain"
               />
             </View>
 
             {/* Main Content */}
             <View style={[styles.mainSection, isDesktop && styles.mainSectionDesktop]}>
-              <Text style={[styles.title, isDesktop && styles.titleDesktop]}>
+              <Text style={[
+                styles.title, 
+                isMobile && styles.titleMobile,
+                isDesktop && styles.titleDesktop
+              ]}>
                 Track Your{' '}
                 <Text style={styles.highlightText}>FACEIT</Text>
                 {' '}Stats
               </Text>
               
-              <Text style={[styles.subtitle, isDesktop && styles.subtitleDesktop]}>
+              <Text style={[
+                styles.subtitle, 
+                isMobile && styles.subtitleMobile,
+                isDesktop && styles.subtitleDesktop
+              ]}>
                 Search for any player to view their CS2 statistics, match history, and performance metrics.
               </Text>
 
               {/* Search Box */}
               <View style={[
                 styles.searchContainer,
+                isMobile && styles.searchContainerMobile,
                 (isDesktop || isTablet) && styles.searchContainerDesktop,
                 isSearchFocused && styles.searchContainerFocused,
               ]}>
                 <Ionicons 
                   name="search" 
-                  size={22} 
+                  size={isMobile ? 18 : 22} 
                   color={isSearchFocused ? Colors.dark.faceitOrange : Colors.dark.textMuted} 
                 />
                 <TextInput
-                  style={[styles.searchInput, styles.searchInputWeb]}
+                  style={[
+                    styles.searchInput, 
+                    styles.searchInputWeb,
+                    isMobile && styles.searchInputMobile
+                  ]}
                   value={searchQuery}
                   onChangeText={setSearchQuery}
-                  placeholder="Enter FACEIT username..."
+                  placeholder={isMobile ? "FACEIT username..." : "Enter FACEIT username..."}
                   placeholderTextColor={Colors.dark.textMuted}
                   onFocus={() => setIsSearchFocused(true)}
                   onBlur={() => setIsSearchFocused(false)}
@@ -152,16 +173,26 @@ export default function TabOneScreen() {
                     onPress={() => setSearchQuery('')} 
                     style={styles.clearButton}
                   >
-                    <Ionicons name="close-circle" size={20} color={Colors.dark.textMuted} />
+                    <Ionicons name="close-circle" size={isMobile ? 18 : 20} color={Colors.dark.textMuted} />
                   </Pressable>
                 )}
                 <Pressable 
-                  style={[styles.searchButton, !searchQuery.trim() && styles.searchButtonDisabled]} 
+                  style={[
+                    styles.searchButton, 
+                    isMobile && styles.searchButtonMobile,
+                    !searchQuery.trim() && styles.searchButtonDisabled
+                  ]} 
                   onPress={handleSearch}
                   disabled={!searchQuery.trim()}
                 >
-                  <Text style={styles.searchButtonText}>Search</Text>
-                  <Ionicons name="arrow-forward" size={18} color="#fff" />
+                  {isMobile ? (
+                    <Ionicons name="arrow-forward" size={18} color="#fff" />
+                  ) : (
+                    <>
+                      <Text style={styles.searchButtonText}>Search</Text>
+                      <Ionicons name="arrow-forward" size={18} color="#fff" />
+                    </>
+                  )}
                 </Pressable>
               </View>
             </View>
@@ -171,25 +202,41 @@ export default function TabOneScreen() {
           </View>
 
           {/* Promotional Section */}
-          <View style={[styles.promoSection, isDesktop && styles.promoSectionDesktop]}>
+          <View style={[
+            styles.promoSection, 
+            isMobile && styles.promoSectionMobile,
+            isDesktop && styles.promoSectionDesktop
+          ]}>
             <View style={[styles.promoContainer, isDesktop && styles.promoContainerDesktop]}>
               {/* Promo Content */}
               <View style={[styles.promoContent, isDesktop && styles.promoContentDesktop]}>
-                <Text style={[styles.promoTitle, isDesktop && styles.promoTitleDesktop]}>
+                <Text style={[
+                  styles.promoTitle, 
+                  isMobile && styles.promoTitleMobile,
+                  isDesktop && styles.promoTitleDesktop
+                ]}>
                   Your <Text style={styles.highlightText}>FACEIT</Text> data,{'\n'}
                   <Text style={styles.cleanText}>Clean</Text> mode.
                 </Text>
-                <Text style={[styles.promoTagline, isDesktop && styles.promoTaglineDesktop]}>
+                <Text style={[
+                  styles.promoTagline, 
+                  isMobile && styles.promoTaglineMobile,
+                  isDesktop && styles.promoTaglineDesktop
+                ]}>
                   Track your ELO, analyze match history, and monitor your performance. All your Counter-Strike 2 statistics in one sleek mobile app.
                 </Text>
 
                 {/* Store Buttons */}
                 <View style={[styles.storeButtons, !isDesktop && styles.storeButtonsMobile]}>
                   <Pressable 
-                    style={[styles.storeBtn, clickedStore === 'apple' && styles.storeBtnClicked]} 
+                    style={[
+                      styles.storeBtn, 
+                      isMobile && styles.storeBtnMobile,
+                      clickedStore === 'apple' && styles.storeBtnClicked
+                    ]} 
                     onPress={() => handleStorePress('apple')}
                   >
-                    <Ionicons name="logo-apple" size={28} color={Colors.dark.text} />
+                    <Ionicons name="logo-apple" size={isMobile ? 24 : 28} color={Colors.dark.text} />
                     <View style={styles.storeBtnText}>
                       {clickedStore === 'apple' ? (
                         <>
@@ -205,10 +252,14 @@ export default function TabOneScreen() {
                     </View>
                   </Pressable>
                   <Pressable 
-                    style={[styles.storeBtn, clickedStore === 'google' && styles.storeBtnClicked]} 
+                    style={[
+                      styles.storeBtn, 
+                      isMobile && styles.storeBtnMobile,
+                      clickedStore === 'google' && styles.storeBtnClicked
+                    ]} 
                     onPress={() => handleStorePress('google')}
                   >
-                    <Ionicons name="logo-google-playstore" size={28} color={Colors.dark.text} />
+                    <Ionicons name="logo-google-playstore" size={isMobile ? 24 : 28} color={Colors.dark.text} />
                     <View style={styles.storeBtnText}>
                       {clickedStore === 'google' ? (
                         <>
@@ -227,23 +278,23 @@ export default function TabOneScreen() {
 
                 {/* Features */}
                 <View style={[styles.features, !isDesktop && styles.featuresMobile]}>
-                  <View style={styles.featureItem}>
-                    <View style={styles.featureIcon}>
-                      <Ionicons name="bar-chart-outline" size={18} color={Colors.dark.faceitOrange} />
+                  <View style={[styles.featureItem, isMobile && styles.featureItemMobile]}>
+                    <View style={[styles.featureIcon, isMobile && styles.featureIconMobile]}>
+                      <Ionicons name="bar-chart-outline" size={isMobile ? 18 : 18} color={Colors.dark.faceitOrange} />
                     </View>
-                    <Text style={styles.featureText}>Live Stats</Text>
+                    <Text style={[styles.featureText, isMobile && styles.featureTextMobile]}>Live Stats</Text>
                   </View>
-                  <View style={styles.featureItem}>
-                    <View style={styles.featureIcon}>
-                      <Ionicons name="time-outline" size={18} color={Colors.dark.faceitOrange} />
+                  <View style={[styles.featureItem, isMobile && styles.featureItemMobile]}>
+                    <View style={[styles.featureIcon, isMobile && styles.featureIconMobile]}>
+                      <Ionicons name="time-outline" size={isMobile ? 18 : 18} color={Colors.dark.faceitOrange} />
                     </View>
-                    <Text style={styles.featureText}>Match History</Text>
+                    <Text style={[styles.featureText, isMobile && styles.featureTextMobile]}>Match History</Text>
                   </View>
-                  <View style={styles.featureItem}>
-                    <View style={styles.featureIcon}>
-                      <Ionicons name="heart-outline" size={18} color={Colors.dark.faceitOrange} />
+                  <View style={[styles.featureItem, isMobile && styles.featureItemMobile]}>
+                    <View style={[styles.featureIcon, isMobile && styles.featureIconMobile]}>
+                      <Ionicons name="heart-outline" size={isMobile ? 18 : 18} color={Colors.dark.faceitOrange} />
                     </View>
-                    <Text style={styles.featureText}>Favorites</Text>
+                    <Text style={[styles.featureText, isMobile && styles.featureTextMobile]}>Favorites</Text>
                   </View>
                 </View>
               </View>
@@ -339,15 +390,15 @@ export default function TabOneScreen() {
           </View>
 
           {/* Footer */}
-          <View style={styles.webFooter}>
+          <View style={[styles.webFooter, isMobile && styles.webFooterMobile]}>
             <Pressable 
-              style={styles.supportButton}
+              style={[styles.supportButton, isMobile && styles.supportButtonMobile]}
               onPress={() => Linking.openURL('https://ko-fi.com/leotrimhaliti')}
             >
-              <Ionicons name="heart" size={16} color={Colors.dark.faceitOrange} />
-              <Text style={styles.supportButtonText}>Support the Developer</Text>
+              <Ionicons name="heart" size={isMobile ? 14 : 16} color={Colors.dark.faceitOrange} />
+              <Text style={[styles.supportButtonText, isMobile && styles.supportButtonTextMobile]}>Support the Developer</Text>
             </Pressable>
-            <Text style={styles.footerText}>
+            <Text style={[styles.footerText, isMobile && styles.footerTextMobile]}>
               Made with love for the FACEIT community
             </Text>
           </View>
@@ -457,6 +508,10 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingBottom: 120, // Push content up to account for scroll indicator
   },
+  searchSectionMobile: {
+    padding: 16,
+    paddingBottom: 100,
+  },
   searchSectionDesktop: {
     maxWidth: 800,
     alignSelf: 'center',
@@ -475,6 +530,10 @@ const styles = StyleSheet.create({
     width: 280,
     height: 80,
   },
+  logoMobile: {
+    width: 200,
+    height: 60,
+  },
   logoDesktop: {
     width: 400,
     height: 100,
@@ -492,6 +551,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 12,
   },
+  titleMobile: {
+    fontSize: 20,
+    marginBottom: 10,
+  },
   titleDesktop: {
     fontSize: 42,
     marginBottom: 16,
@@ -507,6 +570,13 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     lineHeight: 22,
     maxWidth: 400,
+  },
+  subtitleMobile: {
+    fontSize: 13,
+    lineHeight: 20,
+    marginBottom: 24,
+    maxWidth: 300,
+    paddingHorizontal: 8,
   },
   subtitleDesktop: {
     fontSize: 18,
@@ -527,6 +597,12 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
     gap: 12,
   },
+  searchContainerMobile: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    gap: 8,
+    borderRadius: 10,
+  },
   searchContainerDesktop: {
     maxWidth: 600,
     paddingVertical: 12,
@@ -543,6 +619,10 @@ const styles = StyleSheet.create({
     color: Colors.dark.text,
     paddingVertical: 8,
   },
+  searchInputMobile: {
+    fontSize: 14,
+    paddingVertical: 6,
+  },
   searchInputWeb: {
     outlineStyle: 'none',
   } as any,
@@ -556,6 +636,11 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.dark.faceitOrange,
     paddingHorizontal: 20,
     paddingVertical: 12,
+    borderRadius: 8,
+  },
+  searchButtonMobile: {
+    paddingHorizontal: 14,
+    paddingVertical: 10,
     borderRadius: 8,
   },
   searchButtonDisabled: {
@@ -625,6 +710,11 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#1F1F1F',
   },
+  promoSectionMobile: {
+    minHeight: 'auto' as any,
+    paddingVertical: 40,
+    paddingHorizontal: 16,
+  },
   promoSectionDesktop: {
     paddingVertical: 80,
     paddingHorizontal: 40,
@@ -657,6 +747,11 @@ const styles = StyleSheet.create({
     letterSpacing: -1,
     lineHeight: 40,
   },
+  promoTitleMobile: {
+    fontSize: 24,
+    lineHeight: 32,
+    marginBottom: 16,
+  },
   promoTitleDesktop: {
     fontSize: 48,
     textAlign: 'left',
@@ -673,6 +768,12 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     lineHeight: 26,
   },
+  promoTaglineMobile: {
+    fontSize: 14,
+    lineHeight: 22,
+    marginBottom: 24,
+    paddingHorizontal: 8,
+  },
   promoTaglineDesktop: {
     fontSize: 18,
     textAlign: 'left',
@@ -687,6 +788,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     width: '100%',
     alignItems: 'center',
+    gap: 12,
   },
   storeBtn: {
     flexDirection: 'row',
@@ -698,6 +800,14 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 24,
     borderRadius: 14,
+  },
+  storeBtnMobile: {
+    width: 220,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    gap: 12,
+    borderRadius: 12,
+    justifyContent: 'center',
   },
   storeBtnText: {
     alignItems: 'flex-start',
@@ -731,14 +841,23 @@ const styles = StyleSheet.create({
     borderTopColor: '#1F1F1F',
   },
   featuresMobile: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: 16,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 12,
+    marginTop: 24,
+    paddingTop: 24,
+    flexWrap: 'wrap',
   },
   featureItem: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
+  },
+  featureItemMobile: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: 6,
+    minWidth: 80,
   },
   featureIcon: {
     width: 36,
@@ -748,10 +867,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  featureIconMobile: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+  },
   featureText: {
     fontSize: 13,
     color: Colors.dark.textMuted,
     fontWeight: '500',
+  },
+  featureTextMobile: {
+    fontSize: 11,
+    textAlign: 'center',
   },
   // Phone mockup styles
   mockupContainer: {
@@ -929,6 +1057,10 @@ const styles = StyleSheet.create({
     paddingVertical: 40,
     gap: 16,
   },
+  webFooterMobile: {
+    paddingVertical: 30,
+    gap: 12,
+  },
   supportButton: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -940,9 +1072,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     borderRadius: 100,
   },
+  supportButtonMobile: {
+    paddingVertical: 10,
+    paddingHorizontal: 18,
+    gap: 6,
+  },
   supportButtonText: {
     fontSize: 14,
     fontWeight: '600',
     color: Colors.dark.text,
+  },
+  supportButtonTextMobile: {
+    fontSize: 13,
+  },
+  footerTextMobile: {
+    fontSize: 11,
   },
 });

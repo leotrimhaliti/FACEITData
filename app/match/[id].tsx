@@ -19,7 +19,7 @@ export default function MatchDetailsScreen() {
   const [playerCountries, setPlayerCountries] = useState<Map<string, string>>(new Map());
   const [playerLevels, setPlayerLevels] = useState<Map<string, number>>(new Map());
   const [capturing, setCapturing] = useState(false);
-  const { isDesktop } = useResponsive();
+  const { isDesktop, isMobile } = useResponsive();
   const isWeb = Platform.OS === 'web';
   const scoreboardRef = useRef<View>(null);
 
@@ -280,7 +280,11 @@ export default function MatchDetailsScreen() {
   };
 
   const mainContent = (
-    <ScrollView contentContainerStyle={[styles.content, isWeb && isDesktop && styles.contentDesktop]}>
+    <ScrollView contentContainerStyle={[
+      styles.content, 
+      isWeb && isMobile && styles.contentMobile,
+      isWeb && isDesktop && styles.contentDesktop
+    ]}>
       {/* Screenshot Container - includes header and scoreboards */}
       <View 
         id="scoreboard-capture"
@@ -288,77 +292,103 @@ export default function MatchDetailsScreen() {
         collapsable={false}
       >
         {/* Match Header */}
-        <View style={styles.header}>
+        <View style={[styles.header, isWeb && isMobile && styles.headerMobile]}>
           <View style={styles.teamHeader}>
-            <Image source={{ uri: team1.avatar || 'https://assets.faceit-cdn.net/avatars/defaults/user.png' }} style={styles.teamLogo} />
-            <Text style={styles.teamName} numberOfLines={2}>{team1.name}</Text>
-            <Text style={[styles.bigScore, { color: winner === 'faction1' ? Colors.dark.winGreen : Colors.dark.lossRed }]}>
+            <Image 
+              source={{ uri: team1.avatar || 'https://assets.faceit-cdn.net/avatars/defaults/user.png' }} 
+              style={[styles.teamLogo, isWeb && isMobile && styles.teamLogoMobile]} 
+            />
+            <Text style={[styles.teamName, isWeb && isMobile && styles.teamNameMobile]} numberOfLines={2}>{team1.name}</Text>
+            <Text style={[
+              styles.bigScore, 
+              isWeb && isMobile && styles.bigScoreMobile,
+              { color: winner === 'faction1' ? Colors.dark.winGreen : Colors.dark.lossRed }
+            ]}>
               {score.faction1}
             </Text>
           </View>
 
-          <View style={styles.matchInfo}>
-            <Text style={styles.vsText}>VS</Text>
-            <View style={styles.mapBadge}>
-              <Text style={styles.mapName}>{mapName}</Text>
+          <View style={[styles.matchInfo, isWeb && isMobile && styles.matchInfoMobile]}>
+            <Text style={[styles.vsText, isWeb && isMobile && styles.vsTextMobile]}>VS</Text>
+            <View style={[styles.mapBadge, isWeb && isMobile && styles.mapBadgeMobile]}>
+              <Text style={[styles.mapName, isWeb && isMobile && styles.mapNameMobile]}>{mapName}</Text>
             </View>
-            <Text style={styles.date}>
+            <Text style={[styles.date, isWeb && isMobile && styles.dateMobile]}>
               {new Date(match.started_at * 1000).toLocaleDateString()}
             </Text>
-            <Text style={styles.statusText}>Finished</Text>
+            <Text style={[styles.statusText, isWeb && isMobile && styles.statusTextMobile]}>Finished</Text>
           </View>
 
           <View style={styles.teamHeader}>
-            <Image source={{ uri: team2.avatar || 'https://assets.faceit-cdn.net/avatars/defaults/user.png' }} style={styles.teamLogo} />
-            <Text style={styles.teamName} numberOfLines={2}>{team2.name}</Text>
-            <Text style={[styles.bigScore, { color: winner === 'faction2' ? Colors.dark.winGreen : Colors.dark.lossRed }]}>
+            <Image 
+              source={{ uri: team2.avatar || 'https://assets.faceit-cdn.net/avatars/defaults/user.png' }} 
+              style={[styles.teamLogo, isWeb && isMobile && styles.teamLogoMobile]} 
+            />
+            <Text style={[styles.teamName, isWeb && isMobile && styles.teamNameMobile]} numberOfLines={2}>{team2.name}</Text>
+            <Text style={[
+              styles.bigScore, 
+              isWeb && isMobile && styles.bigScoreMobile,
+              { color: winner === 'faction2' ? Colors.dark.winGreen : Colors.dark.lossRed }
+            ]}>
               {score.faction2}
             </Text>
           </View>
         </View>
 
         {/* Scoreboards Container - side by side on desktop */}
-        <View style={[styles.scoreboardsWrapper, isWeb && isDesktop && styles.scoreboardsWrapperDesktop]}>
+        <View style={[
+          styles.scoreboardsWrapper, 
+          isWeb && isMobile && styles.scoreboardsWrapperMobile,
+          isWeb && isDesktop && styles.scoreboardsWrapperDesktop
+        ]}>
           {/* Team 1 Scoreboard */}
-          <View style={[styles.scoreboard, isWeb && isDesktop && styles.scoreboardDesktop]}>
+          <View style={[
+            styles.scoreboard, 
+            isWeb && isMobile && styles.scoreboardMobile,
+            isWeb && isDesktop && styles.scoreboardDesktop
+          ]}>
             <View style={[styles.scoreboardHeader, winner === 'faction1' && styles.scoreboardHeaderWinner]}>
-              <Text style={styles.scoreboardTeamName}>{team1.name}</Text>
+              <Text style={[styles.scoreboardTeamName, isWeb && isMobile && styles.scoreboardTeamNameMobile]}>{team1.name}</Text>
               {winner === 'faction1' && (
-                <View style={styles.winnerBadge}>
-                  <Ionicons name="trophy" size={12} color="#fff" />
-                  <Text style={styles.winnerBadgeText}>WIN</Text>
+                <View style={[styles.winnerBadge, isWeb && isMobile && styles.winnerBadgeMobile]}>
+                  <Ionicons name="trophy" size={isMobile ? 10 : 12} color="#fff" />
+                  <Text style={[styles.winnerBadgeText, isWeb && isMobile && styles.winnerBadgeTextMobile]}>WIN</Text>
                 </View>
               )}
             </View>
-            <View style={styles.tableHeader}>
-              <View style={styles.playerCell}><Text style={styles.headerText}>Player</Text></View>
-              <View style={styles.statCell}><Text style={styles.headerText}>K-D</Text></View>
-              <View style={styles.statCell}><Text style={styles.headerText}>+/-</Text></View>
-              <View style={styles.statCell}><Text style={styles.headerText}>ADR</Text></View>
-              <View style={styles.statCell}><Text style={styles.headerText}>HS%</Text></View>
-              <View style={styles.statCell}><Text style={styles.headerText}>K/D</Text></View>
+            <View style={[styles.tableHeader, isWeb && isMobile && styles.tableHeaderMobile]}>
+              <View style={styles.playerCell}><Text style={[styles.headerText, isWeb && isMobile && styles.headerTextMobile]}>Player</Text></View>
+              <View style={styles.statCell}><Text style={[styles.headerText, isWeb && isMobile && styles.headerTextMobile]}>K-D</Text></View>
+              <View style={styles.statCell}><Text style={[styles.headerText, isWeb && isMobile && styles.headerTextMobile]}>+/-</Text></View>
+              <View style={styles.statCell}><Text style={[styles.headerText, isWeb && isMobile && styles.headerTextMobile]}>ADR</Text></View>
+              <View style={styles.statCell}><Text style={[styles.headerText, isWeb && isMobile && styles.headerTextMobile]}>HS%</Text></View>
+              <View style={styles.statCell}><Text style={[styles.headerText, isWeb && isMobile && styles.headerTextMobile]}>K/D</Text></View>
             </View>
             {team1Stats.map((p: any) => renderPlayerRow(p))}
           </View>
 
           {/* Team 2 Scoreboard */}
-          <View style={[styles.scoreboard, isWeb && isDesktop && styles.scoreboardDesktop]}>
+          <View style={[
+            styles.scoreboard, 
+            isWeb && isMobile && styles.scoreboardMobile,
+            isWeb && isDesktop && styles.scoreboardDesktop
+          ]}>
             <View style={[styles.scoreboardHeader, winner === 'faction2' && styles.scoreboardHeaderWinner]}>
-              <Text style={styles.scoreboardTeamName}>{team2.name}</Text>
+              <Text style={[styles.scoreboardTeamName, isWeb && isMobile && styles.scoreboardTeamNameMobile]}>{team2.name}</Text>
               {winner === 'faction2' && (
-                <View style={styles.winnerBadge}>
-                  <Ionicons name="trophy" size={12} color="#fff" />
-                  <Text style={styles.winnerBadgeText}>WIN</Text>
+                <View style={[styles.winnerBadge, isWeb && isMobile && styles.winnerBadgeMobile]}>
+                  <Ionicons name="trophy" size={isMobile ? 10 : 12} color="#fff" />
+                  <Text style={[styles.winnerBadgeText, isWeb && isMobile && styles.winnerBadgeTextMobile]}>WIN</Text>
                 </View>
               )}
             </View>
-            <View style={styles.tableHeader}>
-              <View style={styles.playerCell}><Text style={styles.headerText}>Player</Text></View>
-              <View style={styles.statCell}><Text style={styles.headerText}>K-D</Text></View>
-              <View style={styles.statCell}><Text style={styles.headerText}>+/-</Text></View>
-              <View style={styles.statCell}><Text style={styles.headerText}>ADR</Text></View>
-              <View style={styles.statCell}><Text style={styles.headerText}>HS%</Text></View>
-              <View style={styles.statCell}><Text style={styles.headerText}>K/D</Text></View>
+            <View style={[styles.tableHeader, isWeb && isMobile && styles.tableHeaderMobile]}>
+              <View style={styles.playerCell}><Text style={[styles.headerText, isWeb && isMobile && styles.headerTextMobile]}>Player</Text></View>
+              <View style={styles.statCell}><Text style={[styles.headerText, isWeb && isMobile && styles.headerTextMobile]}>K-D</Text></View>
+              <View style={styles.statCell}><Text style={[styles.headerText, isWeb && isMobile && styles.headerTextMobile]}>+/-</Text></View>
+              <View style={styles.statCell}><Text style={[styles.headerText, isWeb && isMobile && styles.headerTextMobile]}>ADR</Text></View>
+              <View style={styles.statCell}><Text style={[styles.headerText, isWeb && isMobile && styles.headerTextMobile]}>HS%</Text></View>
+              <View style={styles.statCell}><Text style={[styles.headerText, isWeb && isMobile && styles.headerTextMobile]}>K/D</Text></View>
             </View>
             {team2Stats.map((p: any) => renderPlayerRow(p))}
           </View>
@@ -405,7 +435,24 @@ export default function MatchDetailsScreen() {
     );
   }
 
-  // Mobile
+  // Mobile web layout
+  if (isWeb && isMobile) {
+    return (
+      <View style={styles.mobileWebLayout}>
+        <Stack.Screen options={{ title: 'Match Room', headerShown: false }} />
+        <View style={styles.mobileWebHeader}>
+          <Pressable style={styles.mobileBackButton} onPress={() => router.back()}>
+            <Ionicons name="arrow-back" size={22} color={Colors.dark.text} />
+          </Pressable>
+          <Text style={styles.mobileWebTitle}>Match Room</Text>
+          <View style={styles.mobileHeaderSpacer} />
+        </View>
+        {mainContent}
+      </View>
+    );
+  }
+
+  // Native mobile
   return (
     <ScreenBackground>
       <Stack.Screen options={{ title: 'Match Room', headerBackTitle: 'Back', headerStyle: { backgroundColor: Colors.dark.background }, headerTintColor: Colors.dark.text }} />
@@ -420,6 +467,32 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     backgroundColor: Colors.dark.background,
+  },
+  mobileWebLayout: {
+    flex: 1,
+    backgroundColor: Colors.dark.background,
+  },
+  mobileWebHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.dark.border,
+    backgroundColor: Colors.dark.background,
+  },
+  mobileBackButton: {
+    padding: 8,
+    marginRight: 4,
+  },
+  mobileWebTitle: {
+    flex: 1,
+    fontSize: 16,
+    fontWeight: '600',
+    color: Colors.dark.text,
+  },
+  mobileHeaderSpacer: {
+    width: 38,
   },
   mainArea: {
     flex: 1,
@@ -506,6 +579,10 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingBottom: 40,
   },
+  contentMobile: {
+    padding: 10,
+    paddingBottom: 24,
+  },
   contentDesktop: {
     padding: 24,
     maxWidth: 1200,
@@ -521,6 +598,10 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     marginBottom: 24,
   },
+  headerMobile: {
+    paddingVertical: 12,
+    marginBottom: 16,
+  },
   teamHeader: {
     alignItems: 'center',
     flex: 1,
@@ -532,6 +613,12 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     backgroundColor: Colors.dark.border,
   },
+  teamLogoMobile: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    marginBottom: 6,
+  },
   teamName: {
     fontSize: 13,
     fontWeight: 'bold',
@@ -540,20 +627,35 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     maxWidth: 100,
   },
+  teamNameMobile: {
+    fontSize: 11,
+    marginBottom: 6,
+    maxWidth: 80,
+  },
   bigScore: {
     fontSize: 36,
     fontWeight: 'bold',
+  },
+  bigScoreMobile: {
+    fontSize: 28,
   },
   matchInfo: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 16,
   },
+  matchInfoMobile: {
+    paddingHorizontal: 8,
+  },
   vsText: {
     fontSize: 16,
     fontWeight: '600',
     color: Colors.dark.textMuted,
     marginBottom: 8,
+  },
+  vsTextMobile: {
+    fontSize: 12,
+    marginBottom: 6,
   },
   mapBadge: {
     backgroundColor: Colors.dark.cardBackground,
@@ -562,21 +664,36 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     marginBottom: 8,
   },
+  mapBadgeMobile: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+    marginBottom: 6,
+  },
   mapName: {
     fontSize: 14,
     fontWeight: '600',
     color: Colors.dark.faceitOrange,
+  },
+  mapNameMobile: {
+    fontSize: 11,
   },
   date: {
     fontSize: 12,
     color: Colors.dark.textSecondary,
     marginBottom: 4,
   },
+  dateMobile: {
+    fontSize: 10,
+  },
   statusText: {
     fontSize: 11,
     fontWeight: '600',
     color: Colors.dark.faceitOrange,
     textTransform: 'uppercase',
+  },
+  statusTextMobile: {
+    fontSize: 9,
   },
 
   // Download Button
@@ -608,6 +725,9 @@ const styles = StyleSheet.create({
   scoreboardsWrapper: {
     gap: 24,
   },
+  scoreboardsWrapperMobile: {
+    gap: 16,
+  },
   scoreboardsWrapperDesktop: {
     flexDirection: 'row',
     gap: 24,
@@ -616,6 +736,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.dark.cardBackground,
     borderRadius: 12,
     overflow: 'hidden',
+  },
+  scoreboardMobile: {
+    borderRadius: 8,
   },
   scoreboardDesktop: {
     flex: 1,
@@ -636,6 +759,9 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: Colors.dark.text,
   },
+  scoreboardTeamNameMobile: {
+    fontSize: 13,
+  },
   winnerBadge: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -645,10 +771,18 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     borderRadius: 4,
   },
+  winnerBadgeMobile: {
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    gap: 3,
+  },
   winnerBadgeText: {
     fontSize: 10,
     fontWeight: '700',
     color: '#fff',
+  },
+  winnerBadgeTextMobile: {
+    fontSize: 8,
   },
   tableHeader: {
     flexDirection: 'row',
@@ -657,11 +791,18 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: Colors.dark.border,
   },
+  tableHeaderMobile: {
+    paddingVertical: 8,
+    paddingHorizontal: 8,
+  },
   headerText: {
     fontSize: 10,
     fontWeight: '600',
     color: Colors.dark.textMuted,
     textTransform: 'uppercase',
+  },
+  headerTextMobile: {
+    fontSize: 8,
   },
   row: {
     flexDirection: 'row',

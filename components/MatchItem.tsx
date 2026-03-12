@@ -41,7 +41,7 @@ export function MatchItem({
   const resultColor = isWin ? Colors.dark.winGreen : Colors.dark.lossRed;
   const [favorited, setFavorited] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const { isDesktop } = useResponsive();
+  const { isDesktop, isMobile } = useResponsive();
   const isWeb = Platform.OS === 'web';
 
   // Use grid variant on desktop web if not explicitly set
@@ -169,6 +169,7 @@ export function MatchItem({
       >
         <View style={[
           styles.container, 
+          isWeb && isMobile && styles.containerMobile,
           { borderLeftColor: resultColor },
           isWeb && isHovered && styles.containerHovered,
         ]}>
@@ -235,6 +236,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 3,
+  },
+  containerMobile: {
+    marginHorizontal: 0,
+    marginBottom: 6,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderRadius: 10,
+    borderLeftWidth: 3,
   },
   containerHovered: {
     backgroundColor: 'rgba(40, 40, 40, 1)',
@@ -303,6 +312,7 @@ const styles = StyleSheet.create({
     minWidth: 30,
     textAlign: 'right',
   },
+  // Mobile-specific overrides applied via isMobile checks if needed
   favoriteButton: {
     marginLeft: 12,
     padding: 4,
