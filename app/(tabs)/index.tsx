@@ -506,11 +506,11 @@ const styles = StyleSheet.create({
     paddingBottom: 120, // Push content up to account for scroll indicator
   },
   searchSectionMobile: {
-    minHeight: 'auto' as any,
-    flex: 1,
+    minHeight: '100vh' as any,
     padding: 16,
-    paddingBottom: 20,
+    paddingBottom: 40,
     paddingTop: 60,
+    justifyContent: 'center',
   },
   searchSectionDesktop: {
     maxWidth: 800,
