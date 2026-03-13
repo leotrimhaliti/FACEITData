@@ -39,4 +39,14 @@ body {
   body {
     background-color: #000;
   }
+}
+@media (max-width: 768px) {
+  html, body, #root {
+    height: auto;
+    min-height: 100%;
+  }
+  body {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
 }`;
