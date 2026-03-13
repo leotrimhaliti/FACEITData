@@ -197,197 +197,194 @@ export default function TabOneScreen() {
               </View>
             </View>
 
-            {/* Scroll Indicator */}
-            <ScrollIndicator onPress={scrollToPromo} />
+            {/* Scroll Indicator - Desktop only */}
+            {!isMobile && <ScrollIndicator onPress={scrollToPromo} />}
           </View>
 
-          {/* Promotional Section */}
-          <View style={[
-            styles.promoSection, 
-            isMobile && styles.promoSectionMobile,
-            isDesktop && styles.promoSectionDesktop
-          ]}>
-            <View style={[styles.promoContainer, isDesktop && styles.promoContainerDesktop]}>
-              {/* Promo Content */}
-              <View style={[styles.promoContent, isDesktop && styles.promoContentDesktop]}>
-                <Text style={[
-                  styles.promoTitle, 
-                  isMobile && styles.promoTitleMobile,
-                  isDesktop && styles.promoTitleDesktop
-                ]}>
-                  Your <Text style={styles.highlightText}>FACEIT</Text> data,{'\n'}
-                  <Text style={styles.cleanText}>Clean</Text> mode.
-                </Text>
-                <Text style={[
-                  styles.promoTagline, 
-                  isMobile && styles.promoTaglineMobile,
-                  isDesktop && styles.promoTaglineDesktop
-                ]}>
-                  Track your ELO, analyze match history, and monitor your performance. All your Counter-Strike 2 statistics in one sleek mobile app.
-                </Text>
+          {/* Promotional Section - Desktop/Tablet only */}
+          {!isMobile && (
+            <View style={[
+              styles.promoSection, 
+              isDesktop && styles.promoSectionDesktop
+            ]}>
+              <View style={[styles.promoContainer, isDesktop && styles.promoContainerDesktop]}>
+                {/* Promo Content */}
+                <View style={[styles.promoContent, isDesktop && styles.promoContentDesktop]}>
+                  <Text style={[
+                    styles.promoTitle, 
+                    isDesktop && styles.promoTitleDesktop
+                  ]}>
+                    Your <Text style={styles.highlightText}>FACEIT</Text> data,{'\n'}
+                    <Text style={styles.cleanText}>Clean</Text> mode.
+                  </Text>
+                  <Text style={[
+                    styles.promoTagline, 
+                    isDesktop && styles.promoTaglineDesktop
+                  ]}>
+                    Track your ELO, analyze match history, and monitor your performance. All your Counter-Strike 2 statistics in one sleek mobile app.
+                  </Text>
 
-                {/* Store Buttons */}
-                <View style={[styles.storeButtons, !isDesktop && styles.storeButtonsMobile]}>
-                  <Pressable 
-                    style={[
-                      styles.storeBtn, 
-                      isMobile && styles.storeBtnMobile,
-                      clickedStore === 'apple' && styles.storeBtnClicked
-                    ]} 
-                    onPress={() => handleStorePress('apple')}
-                  >
-                    <Ionicons name="logo-apple" size={isMobile ? 24 : 28} color={Colors.dark.text} />
-                    <View style={styles.storeBtnText}>
-                      {clickedStore === 'apple' ? (
-                        <>
-                          <Text style={styles.storeBtnSmall}>Stay tuned!</Text>
-                          <Text style={[styles.storeBtnMain, styles.comingSoonText]}>Coming Soon</Text>
-                        </>
-                      ) : (
-                        <>
-                          <Text style={styles.storeBtnSmall}>Download on the</Text>
-                          <Text style={styles.storeBtnMain}>App Store</Text>
-                        </>
-                      )}
-                    </View>
-                  </Pressable>
-                  <Pressable 
-                    style={[
-                      styles.storeBtn, 
-                      isMobile && styles.storeBtnMobile,
-                      clickedStore === 'google' && styles.storeBtnClicked
-                    ]} 
-                    onPress={() => handleStorePress('google')}
-                  >
-                    <Ionicons name="logo-google-playstore" size={isMobile ? 24 : 28} color={Colors.dark.text} />
-                    <View style={styles.storeBtnText}>
-                      {clickedStore === 'google' ? (
-                        <>
-                          <Text style={styles.storeBtnSmall}>Stay tuned!</Text>
-                          <Text style={[styles.storeBtnMain, styles.comingSoonText]}>Coming Soon</Text>
-                        </>
-                      ) : (
-                        <>
-                          <Text style={styles.storeBtnSmall}>Get it on</Text>
-                          <Text style={styles.storeBtnMain}>Google Play</Text>
-                        </>
-                      )}
-                    </View>
-                  </Pressable>
-                </View>
+                  {/* Store Buttons */}
+                  <View style={[styles.storeButtons, !isDesktop && styles.storeButtonsMobile]}>
+                    <Pressable 
+                      style={[
+                        styles.storeBtn, 
+                        clickedStore === 'apple' && styles.storeBtnClicked
+                      ]} 
+                      onPress={() => handleStorePress('apple')}
+                    >
+                      <Ionicons name="logo-apple" size={28} color={Colors.dark.text} />
+                      <View style={styles.storeBtnText}>
+                        {clickedStore === 'apple' ? (
+                          <>
+                            <Text style={styles.storeBtnSmall}>Stay tuned!</Text>
+                            <Text style={[styles.storeBtnMain, styles.comingSoonText]}>Coming Soon</Text>
+                          </>
+                        ) : (
+                          <>
+                            <Text style={styles.storeBtnSmall}>Download on the</Text>
+                            <Text style={styles.storeBtnMain}>App Store</Text>
+                          </>
+                        )}
+                      </View>
+                    </Pressable>
+                    <Pressable 
+                      style={[
+                        styles.storeBtn, 
+                        clickedStore === 'google' && styles.storeBtnClicked
+                      ]} 
+                      onPress={() => handleStorePress('google')}
+                    >
+                      <Ionicons name="logo-google-playstore" size={28} color={Colors.dark.text} />
+                      <View style={styles.storeBtnText}>
+                        {clickedStore === 'google' ? (
+                          <>
+                            <Text style={styles.storeBtnSmall}>Stay tuned!</Text>
+                            <Text style={[styles.storeBtnMain, styles.comingSoonText]}>Coming Soon</Text>
+                          </>
+                        ) : (
+                          <>
+                            <Text style={styles.storeBtnSmall}>Get it on</Text>
+                            <Text style={styles.storeBtnMain}>Google Play</Text>
+                          </>
+                        )}
+                      </View>
+                    </Pressable>
+                  </View>
 
-                {/* Features */}
-                <View style={[styles.features, !isDesktop && styles.featuresMobile]}>
-                  <View style={[styles.featureItem, isMobile && styles.featureItemMobile]}>
-                    <View style={[styles.featureIcon, isMobile && styles.featureIconMobile]}>
-                      <Ionicons name="bar-chart-outline" size={isMobile ? 18 : 18} color={Colors.dark.faceitOrange} />
+                  {/* Features */}
+                  <View style={[styles.features, !isDesktop && styles.featuresMobile]}>
+                    <View style={styles.featureItem}>
+                      <View style={styles.featureIcon}>
+                        <Ionicons name="bar-chart-outline" size={18} color={Colors.dark.faceitOrange} />
+                      </View>
+                      <Text style={styles.featureText}>Live Stats</Text>
                     </View>
-                    <Text style={[styles.featureText, isMobile && styles.featureTextMobile]}>Live Stats</Text>
-                  </View>
-                  <View style={[styles.featureItem, isMobile && styles.featureItemMobile]}>
-                    <View style={[styles.featureIcon, isMobile && styles.featureIconMobile]}>
-                      <Ionicons name="time-outline" size={isMobile ? 18 : 18} color={Colors.dark.faceitOrange} />
+                    <View style={styles.featureItem}>
+                      <View style={styles.featureIcon}>
+                        <Ionicons name="time-outline" size={18} color={Colors.dark.faceitOrange} />
+                      </View>
+                      <Text style={styles.featureText}>Match History</Text>
                     </View>
-                    <Text style={[styles.featureText, isMobile && styles.featureTextMobile]}>Match History</Text>
-                  </View>
-                  <View style={[styles.featureItem, isMobile && styles.featureItemMobile]}>
-                    <View style={[styles.featureIcon, isMobile && styles.featureIconMobile]}>
-                      <Ionicons name="heart-outline" size={isMobile ? 18 : 18} color={Colors.dark.faceitOrange} />
+                    <View style={styles.featureItem}>
+                      <View style={styles.featureIcon}>
+                        <Ionicons name="heart-outline" size={18} color={Colors.dark.faceitOrange} />
+                      </View>
+                      <Text style={styles.featureText}>Favorites</Text>
                     </View>
-                    <Text style={[styles.featureText, isMobile && styles.featureTextMobile]}>Favorites</Text>
                   </View>
                 </View>
-              </View>
 
-              {/* Phone Mockup - Desktop Only */}
-              {isDesktop && (
-                <View style={styles.mockupContainer}>
-                  <View style={styles.phoneMockup}>
-                    <View style={styles.phoneNotch} />
-                    <View style={styles.phoneScreen}>
-                      {/* App Header */}
-                      <View style={styles.appHeader}>
-                        <Image
-                          source={require('../../assets/images/faceitimg.jpeg')}
-                          style={styles.appAvatar}
-                        />
-                        <View style={styles.appUserInfo}>
-                          <Text style={styles.appUsername}>leo</Text>
-                          <View style={styles.appLevel}>
-                            <View style={styles.levelBadge}>
-                              <Text style={styles.levelBadgeText}>Level 10</Text>
+                {/* Phone Mockup - Desktop Only */}
+                {isDesktop && (
+                  <View style={styles.mockupContainer}>
+                    <View style={styles.phoneMockup}>
+                      <View style={styles.phoneNotch} />
+                      <View style={styles.phoneScreen}>
+                        {/* App Header */}
+                        <View style={styles.appHeader}>
+                          <Image
+                            source={require('../../assets/images/faceitimg.jpeg')}
+                            style={styles.appAvatar}
+                          />
+                          <View style={styles.appUserInfo}>
+                            <Text style={styles.appUsername}>leo</Text>
+                            <View style={styles.appLevel}>
+                              <View style={styles.levelBadge}>
+                                <Text style={styles.levelBadgeText}>Level 10</Text>
+                              </View>
+                              <Text style={styles.eloText}>2,847 ELO</Text>
                             </View>
-                            <Text style={styles.eloText}>2,847 ELO</Text>
+                          </View>
+                        </View>
+
+                        {/* Stats Row */}
+                        <View style={styles.appStats}>
+                          <View style={styles.statCard}>
+                            <Text style={styles.statValue}>1.34</Text>
+                            <Text style={styles.statLabel}>K/D Ratio</Text>
+                          </View>
+                          <View style={styles.statCard}>
+                            <Text style={styles.statValue}>58%</Text>
+                            <Text style={styles.statLabel}>Win Rate</Text>
+                          </View>
+                          <View style={styles.statCard}>
+                            <Text style={styles.statValue}>1,247</Text>
+                            <Text style={styles.statLabel}>Matches</Text>
+                          </View>
+                        </View>
+
+                        {/* Recent Matches */}
+                        <Text style={styles.matchesTitle}>Recent Matches</Text>
+                        <View style={[styles.appMatch, styles.appMatchWin]}>
+                          <View style={styles.matchMap}>
+                            <Text style={styles.matchMapName}>de_mirage</Text>
+                            <Text style={styles.matchMode}>5v5 Premium</Text>
+                          </View>
+                          <View style={styles.matchResult}>
+                            <Text style={[styles.matchResultText, styles.winText]}>WIN</Text>
+                            <Text style={styles.matchScore}>16-12</Text>
+                          </View>
+                          <View style={styles.matchKd}>
+                            <Text style={[styles.matchKdValue, styles.winText]}>1.45</Text>
+                            <Text style={styles.matchKdLabel}>K/D</Text>
+                          </View>
+                        </View>
+                        <View style={[styles.appMatch, styles.appMatchLoss]}>
+                          <View style={styles.matchMap}>
+                            <Text style={styles.matchMapName}>de_inferno</Text>
+                            <Text style={styles.matchMode}>5v5 Premium</Text>
+                          </View>
+                          <View style={styles.matchResult}>
+                            <Text style={[styles.matchResultText, styles.lossText]}>LOSS</Text>
+                            <Text style={styles.matchScore}>13-16</Text>
+                          </View>
+                          <View style={styles.matchKd}>
+                            <Text style={[styles.matchKdValue, styles.lossText]}>0.87</Text>
+                            <Text style={styles.matchKdLabel}>K/D</Text>
+                          </View>
+                        </View>
+                        <View style={[styles.appMatch, styles.appMatchWin]}>
+                          <View style={styles.matchMap}>
+                            <Text style={styles.matchMapName}>de_anubis</Text>
+                            <Text style={styles.matchMode}>5v5 Premium</Text>
+                          </View>
+                          <View style={styles.matchResult}>
+                            <Text style={[styles.matchResultText, styles.winText]}>WIN</Text>
+                            <Text style={styles.matchScore}>16-9</Text>
+                          </View>
+                          <View style={styles.matchKd}>
+                            <Text style={[styles.matchKdValue, styles.winText]}>1.92</Text>
+                            <Text style={styles.matchKdLabel}>K/D</Text>
                           </View>
                         </View>
                       </View>
-
-                      {/* Stats Row */}
-                      <View style={styles.appStats}>
-                        <View style={styles.statCard}>
-                          <Text style={styles.statValue}>1.34</Text>
-                          <Text style={styles.statLabel}>K/D Ratio</Text>
-                        </View>
-                        <View style={styles.statCard}>
-                          <Text style={styles.statValue}>58%</Text>
-                          <Text style={styles.statLabel}>Win Rate</Text>
-                        </View>
-                        <View style={styles.statCard}>
-                          <Text style={styles.statValue}>1,247</Text>
-                          <Text style={styles.statLabel}>Matches</Text>
-                        </View>
-                      </View>
-
-                      {/* Recent Matches */}
-                      <Text style={styles.matchesTitle}>Recent Matches</Text>
-                      <View style={[styles.appMatch, styles.appMatchWin]}>
-                        <View style={styles.matchMap}>
-                          <Text style={styles.matchMapName}>de_mirage</Text>
-                          <Text style={styles.matchMode}>5v5 Premium</Text>
-                        </View>
-                        <View style={styles.matchResult}>
-                          <Text style={[styles.matchResultText, styles.winText]}>WIN</Text>
-                          <Text style={styles.matchScore}>16-12</Text>
-                        </View>
-                        <View style={styles.matchKd}>
-                          <Text style={[styles.matchKdValue, styles.winText]}>1.45</Text>
-                          <Text style={styles.matchKdLabel}>K/D</Text>
-                        </View>
-                      </View>
-                      <View style={[styles.appMatch, styles.appMatchLoss]}>
-                        <View style={styles.matchMap}>
-                          <Text style={styles.matchMapName}>de_inferno</Text>
-                          <Text style={styles.matchMode}>5v5 Premium</Text>
-                        </View>
-                        <View style={styles.matchResult}>
-                          <Text style={[styles.matchResultText, styles.lossText]}>LOSS</Text>
-                          <Text style={styles.matchScore}>13-16</Text>
-                        </View>
-                        <View style={styles.matchKd}>
-                          <Text style={[styles.matchKdValue, styles.lossText]}>0.87</Text>
-                          <Text style={styles.matchKdLabel}>K/D</Text>
-                        </View>
-                      </View>
-                      <View style={[styles.appMatch, styles.appMatchWin]}>
-                        <View style={styles.matchMap}>
-                          <Text style={styles.matchMapName}>de_anubis</Text>
-                          <Text style={styles.matchMode}>5v5 Premium</Text>
-                        </View>
-                        <View style={styles.matchResult}>
-                          <Text style={[styles.matchResultText, styles.winText]}>WIN</Text>
-                          <Text style={styles.matchScore}>16-9</Text>
-                        </View>
-                        <View style={styles.matchKd}>
-                          <Text style={[styles.matchKdValue, styles.winText]}>1.92</Text>
-                          <Text style={styles.matchKdLabel}>K/D</Text>
-                        </View>
-                      </View>
                     </View>
                   </View>
-                </View>
-              )}
+                )}
+              </View>
             </View>
-          </View>
+          )}
 
           {/* Footer */}
           <View style={[styles.webFooter, isMobile && styles.webFooterMobile]}>
@@ -509,8 +506,11 @@ const styles = StyleSheet.create({
     paddingBottom: 120, // Push content up to account for scroll indicator
   },
   searchSectionMobile: {
+    minHeight: 'auto' as any,
+    flex: 1,
     padding: 16,
-    paddingBottom: 100,
+    paddingBottom: 20,
+    paddingTop: 60,
   },
   searchSectionDesktop: {
     maxWidth: 800,
