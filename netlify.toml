@@ -1,7 +1,16 @@
 [build]
   command = "npm run build:web"
   publish = "dist"
+  functions = "netlify/functions"
 
+# Proxy: Route /api/faceit/* to the serverless function (must be before the SPA catchall)
+[[redirects]]
+  from = "/api/faceit/*"
+  to = "/.netlify/functions/faceit/:splat"
+  status = 200
+  force = true
+
+# SPA fallback: all other routes serve the Expo web build
 [[redirects]]
   from = "/*"
   to = "/index.html"
