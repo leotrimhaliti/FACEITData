@@ -2,17 +2,19 @@ import axios, { AxiosError } from 'axios';
 import { z, ZodError } from 'zod';
 import { Platform } from 'react-native';
 
-// On web (production), all requests go through the serverless proxy so the
-// FACEIT API key is never exposed in the browser bundle.
-// On native, we still call the FACEIT API directly using the env var.
+// On production web, requests go through the Netlify serverless proxy
+// so the FACEIT API key is never exposed in the browser bundle.
+// In local dev or on native, call FACEIT directly using the env var.
 const isWeb = Platform.OS === 'web';
+const isDev = typeof __DEV__ !== 'undefined' && __DEV__;
+const useProxy = isWeb && !isDev;
 
-const BASE_URL = isWeb
-  ? '/api/faceit'                                 // Netlify proxy
-  : 'https://open.faceit.com/data/v4';            // Native direct
+const BASE_URL = useProxy
+  ? '/api/faceit'                                 // Netlify proxy (prod web)
+  : 'https://open.faceit.com/data/v4';            // Direct (dev + native)
 
 const buildHeaders = () => {
-  if (isWeb) return { 'Accept': 'application/json' }; // key is server-side
+  if (useProxy) return { 'Accept': 'application/json' }; // key is server-side
   const key = process.env.EXPO_PUBLIC_FACEIT_API_KEY;
   return {
     'Authorization': `Bearer ${key || ''}`,
