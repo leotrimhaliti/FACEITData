@@ -32,6 +32,8 @@ export default function Root({ children }: { children: React.ReactNode }) {
         <meta property="twitter:image" content="https://faceitdata.com/favicon.png" />
 
         <link rel="icon" type="image/png" href="/favicon.png" />
+        <link rel="canonical" href="https://faceitdata.com/" />
+        <link rel="manifest" href="/manifest.json" />
 
         {/* 
           Disable body scrolling on web. This makes ScrollView components work closer to how they do on native. 
