@@ -12,8 +12,25 @@ export default function Root({ children }: { children: React.ReactNode }) {
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         
-        <title>FACEITData - Your CS2 Stats, Clean Mode</title>
-        <meta name="description" content="Track your FACEIT CS2 statistics, match history, and performance. Download now on iOS and Android." />
+        <title>FACEITData | Track CS2 Stats & ELO</title>
+        <meta name="description" content="Search for any player to track their FACEIT CS2 statistics, ELO progression, win rate, and match history. Clean mode UI." />
+        <meta name="keywords" content="faceit, cs2, stats, elo, tracker, match history, counter-strike 2" />
+        <meta name="theme-color" content="#121212" />
+        
+        {/* Open Graph / Facebook / Discord */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://faceitdata.com/" />
+        <meta property="og:title" content="FACEITData | Track CS2 Stats & ELO" />
+        <meta property="og:description" content="Search for any player to track their FACEIT CS2 statistics, ELO progression, and match history." />
+        <meta property="og:image" content="https://faceitdata.com/favicon.png" />
+
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://faceitdata.com/" />
+        <meta property="twitter:title" content="FACEITData | Track CS2 Stats & ELO" />
+        <meta property="twitter:description" content="Search for any player to track their FACEIT CS2 statistics, ELO progression, and match history." />
+        <meta property="twitter:image" content="https://faceitdata.com/favicon.png" />
+
         <link rel="icon" type="image/png" href="/favicon.png" />
 
         {/* 

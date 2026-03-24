@@ -1,4 +1,5 @@
 import { useRouter } from 'expo-router';
+import Head from 'expo-router/head';
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Image, Linking, Platform, Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 
@@ -55,12 +56,7 @@ export default function TabOneScreen() {
   const { isDesktop, isTablet, isMobile, height } = useResponsive();
   const isWeb = Platform.OS === 'web';
 
-  // Set page title on web
-  useEffect(() => {
-    if (isWeb && typeof document !== 'undefined') {
-      document.title = 'FACEITData - Your CS2 Stats, Clean Mode';
-    }
-  }, [isWeb]);
+  // Set page title on web handled by Head component below
 
   const handleSearch = () => {
     const trimmedQuery = searchQuery.trim();
@@ -89,10 +85,13 @@ export default function TabOneScreen() {
     }
   };
 
-  // Web version with scrollable content
   if (isWeb) {
     return (
       <ScreenBackground style={styles.container}>
+        <Head>
+          <title>FACEITData | Track CS2 Stats & ELO</title>
+          <meta name="description" content="Search for any player to track their FACEIT CS2 statistics, ELO progression, win rate, and match history. Clean mode UI." />
+        </Head>
         <ScrollView 
           ref={scrollViewRef}
           style={styles.scrollView} 

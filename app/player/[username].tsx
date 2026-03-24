@@ -7,6 +7,7 @@ import { useResponsive } from '@/hooks/useResponsive';
 import { FaceitService } from '@/services/faceit';
 import { Ionicons } from '@expo/vector-icons';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import Head from 'expo-router/head';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Image, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
@@ -450,6 +451,12 @@ export default function PlayerStatsScreen() {
   // Native mobile layout
   return (
     <ScreenBackground>
+      <Head>
+        <title>{player?.nickname ? `${player.nickname}'s CS2 Stats | FACEITData` : 'Player Not Found | FACEITData'}</title>
+        <meta name="description" content={`View FACEIT CS2 statistics, ELO progression, and match history for ${player?.nickname || username}.`} />
+        {player?.avatar && <meta property="og:image" content={player.avatar} />}
+        {player?.nickname && <meta property="og:title" content={`${player.nickname}'s FACEIT CS2 Stats`} />}
+      </Head>
       <Stack.Screen options={{ 
         title: username as string, 
         headerBackTitle: 'Search', 
