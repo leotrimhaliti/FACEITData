@@ -259,10 +259,13 @@ export default function PlayerStatsScreen() {
               </View>
               {eloToNextLevel !== null && eloToNextLevel > 0 && (
                 <View style={[styles.eloProgressBadge, isWeb && isMobile && styles.eloProgressBadgeMobile]}>
-                  <Ionicons name="arrow-up-circle-outline" size={isMobile ? 12 : 14} color={Colors.dark.faceitOrange} />
                   <Text style={[styles.eloProgressText, isWeb && isMobile && styles.eloProgressTextMobile]}>
-                    {eloToNextLevel} to Lvl {currentLevel + 1}
+                    {eloToNextLevel} ELO to
                   </Text>
+                  <Image 
+                    source={{ uri: getLevelIconUrl(currentLevel + 1) }} 
+                    style={[styles.nextLevelIcon, isWeb && isMobile && styles.nextLevelIconMobile]} 
+                  />
                 </View>
               )}
             </View>
@@ -751,6 +754,16 @@ const styles = StyleSheet.create({
   },
   eloProgressTextMobile: {
     fontSize: 12,
+  },
+  nextLevelIcon: {
+    width: 22,
+    height: 22,
+    marginLeft: 2,
+  },
+  nextLevelIconMobile: {
+    width: 18,
+    height: 18,
+    marginLeft: 2,
   },
 
   // Stats Section
