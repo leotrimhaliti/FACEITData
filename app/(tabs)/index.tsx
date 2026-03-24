@@ -52,7 +52,7 @@ export default function TabOneScreen() {
   const [clickedStore, setClickedStore] = useState<'apple' | 'google' | null>(null);
   const scrollViewRef = useRef<ScrollView>(null);
   const router = useRouter();
-  const { isDesktop, isTablet, isMobile } = useResponsive();
+  const { isDesktop, isTablet, isMobile, height } = useResponsive();
   const isWeb = Platform.OS === 'web';
 
   // Set page title on web
@@ -103,7 +103,8 @@ export default function TabOneScreen() {
           <View style={[
             styles.searchSection, 
             isMobile && styles.searchSectionMobile,
-            isDesktop && styles.searchSectionDesktop
+            isDesktop && styles.searchSectionDesktop,
+            isWeb && { minHeight: height }
           ]}>
             {/* Logo */}
             <View style={[styles.logoSection, isDesktop && styles.logoSectionDesktop]}>
@@ -519,8 +520,7 @@ const styles = StyleSheet.create({
   searchSectionMobile: {
     minHeight: '100vh' as any,
     padding: 16,
-    paddingBottom: 40,
-    paddingTop: 60,
+    paddingVertical: 20,
     justifyContent: 'center',
   },
   searchSectionDesktop: {
