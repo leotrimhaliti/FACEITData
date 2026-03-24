@@ -188,6 +188,19 @@ export default function PlayerStatsScreen() {
   const kdRatio = parseFloat(stats?.["Average K/D Ratio"] || '0');
   const winRate = parseFloat(stats?.["Win Rate %"] || '0');
 
+  // ELO tracking
+  const currentElo = player?.games?.cs2?.faceit_elo ? parseInt(player.games.cs2.faceit_elo) : 0;
+  const currentLevel = player?.games?.cs2?.skill_level ? parseInt(player.games.cs2.skill_level) : 1;
+  
+  const getNextLevelElo = (elo: number, level: number) => {
+    if (level >= 10 || elo >= 2001) return null;
+    const thresholds = [0, 501, 751, 901, 1051, 1201, 1351, 1531, 1751, 2001];
+    const nextThreshold = thresholds[level];
+    return nextThreshold ? nextThreshold - elo : null;
+  };
+  
+  const eloToNextLevel = currentElo > 0 ? getNextLevelElo(currentElo, currentLevel) : null;
+
   // Main content
   const mainContent = (
     <ScrollView 
@@ -241,6 +254,14 @@ export default function PlayerStatsScreen() {
                   {player?.games?.cs2?.faceit_elo || '0'} ELO
                 </Text>
               </View>
+              {eloToNextLevel !== null && eloToNextLevel > 0 && (
+                <View style={[styles.eloProgressBadge, isWeb && isMobile && styles.eloProgressBadgeMobile]}>
+                  <Ionicons name="arrow-up-circle-outline" size={isMobile ? 12 : 14} color={Colors.dark.faceitOrange} />
+                  <Text style={[styles.eloProgressText, isWeb && isMobile && styles.eloProgressTextMobile]}>
+                    {eloToNextLevel} to Lvl {currentLevel + 1}
+                  </Text>
+                </View>
+              )}
             </View>
           </View>
         </View>
@@ -703,6 +724,30 @@ const styles = StyleSheet.create({
   },
   eloTextMobile: {
     fontSize: 13,
+  },
+  eloProgressBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: 'rgba(255, 85, 0, 0.1)',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 85, 0, 0.2)',
+  },
+  eloProgressBadgeMobile: {
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+    borderRadius: 6,
+  },
+  eloProgressText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: Colors.dark.faceitOrange,
+  },
+  eloProgressTextMobile: {
+    fontSize: 12,
   },
 
   // Stats Section
