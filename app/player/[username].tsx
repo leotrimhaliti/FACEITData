@@ -62,11 +62,14 @@ export default function PlayerStatsScreen() {
         setAllMatchesLoaded(true);
       }
     } catch (err: any) {
-      if (err.name === 'FaceitError') {
+      const errorMsg = err.message?.toLowerCase() || '';
+      
+      if (errorMsg.includes('404') || errorMsg.includes('not found')) {
+        // Let it fall through to the nicely formatted "!player" state below
+        setPlayer(null);
+      } else if (err.name === 'FaceitError') {
         setError(err.message);
-      } else if (err.message?.includes('404') || err.message?.includes('not found')) {
-        setError('Player not found. Please check the username and try again.');
-      } else if (err.message?.includes('network') || err.message?.includes('Network')) {
+      } else if (errorMsg.includes('network')) {
         setError('Network error. Please check your connection and try again.');
       } else {
         setError('Failed to load player data. Please try again.');
