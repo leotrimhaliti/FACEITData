@@ -103,8 +103,7 @@ export default function TabOneScreen() {
           <View style={[
             styles.searchSection, 
             isMobile && styles.searchSectionMobile,
-            isDesktop && styles.searchSectionDesktop,
-            isWeb && { minHeight: height }
+            isDesktop && styles.searchSectionDesktop
           ]}>
             {/* Logo */}
             <View style={[styles.logoSection, isDesktop && styles.logoSectionDesktop]}>
@@ -512,13 +511,13 @@ const styles = StyleSheet.create({
   },
   // Search section
   searchSection: {
-    minHeight: '100vh' as any,
+    minHeight: '100dvh' as any,
     justifyContent: 'center',
     padding: 20,
     paddingBottom: 120, // Push content up to account for scroll indicator
   },
   searchSectionMobile: {
-    minHeight: '100vh' as any,
+    minHeight: '100dvh' as any,
     padding: 16,
     paddingVertical: 20,
     justifyContent: 'center',
