@@ -15,11 +15,21 @@ export const handler = async (event: any) => {
   }
 
   // Strip the function prefix from the path to get the FACEIT endpoint
-  // Incoming: /.netlify/functions/faceit/players?nickname=leo
-  // Desired:  /players?nickname=leo
+  // Incoming path: /.netlify/functions/faceit/players  (splat capture via redirect)
+  // Desired FACEIT path: /players?nickname=leo
   const rawPath: string = event.path || "";
   const faceitPath = rawPath.replace(/^\/.netlify\/functions\/faceit/, "") || "/";
-  const queryString = event.rawQuery ? `?${event.rawQuery}` : "";
+
+  // event.queryStringParameters is the correct Netlify v1 field (rawQuery does NOT exist)
+  const qp = event.queryStringParameters as Record<string, string> | null;
+  const queryString =
+    qp && Object.keys(qp).length
+      ? "?" +
+        Object.entries(qp)
+          .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
+          .join("&")
+      : "";
+
   const upstreamUrl = `${FACEIT_BASE}${faceitPath}${queryString}`;
 
   try {
