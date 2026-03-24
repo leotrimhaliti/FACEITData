@@ -1,27 +1,26 @@
-import type { Context } from "@netlify/functions";
-
 const FACEIT_BASE = "https://open.faceit.com/data/v4";
 
-export default async function handler(req: Request, context: Context): Promise<Response> {
-  // Only allow GET requests
-  if (req.method !== "GET") {
-    return new Response("Method Not Allowed", { status: 405 });
+export const handler = async (event: any) => {
+  if (event.httpMethod !== "GET") {
+    return { statusCode: 405, body: "Method Not Allowed" };
   }
-
-  const url = new URL(req.url);
-  // Strip the /api/faceit prefix to get the downstream path
-  const path = url.pathname.replace(/^\/.netlify\/functions\/faceit/, "").replace(/^\/api\/faceit/, "");
-  const search = url.search;
 
   const apiKey = process.env.FACEIT_API_KEY;
   if (!apiKey) {
-    return new Response(JSON.stringify({ error: "API key not configured" }), {
-      status: 500,
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: "API key not configured on server" }),
       headers: { "Content-Type": "application/json" },
-    });
+    };
   }
 
-  const upstreamUrl = `${FACEIT_BASE}${path}${search}`;
+  // Strip the function prefix from the path to get the FACEIT endpoint
+  // Incoming: /.netlify/functions/faceit/players?nickname=leo
+  // Desired:  /players?nickname=leo
+  const rawPath: string = event.path || "";
+  const faceitPath = rawPath.replace(/^\/.netlify\/functions\/faceit/, "") || "/";
+  const queryString = event.rawQuery ? `?${event.rawQuery}` : "";
+  const upstreamUrl = `${FACEIT_BASE}${faceitPath}${queryString}`;
 
   try {
     const response = await fetch(upstreamUrl, {
@@ -33,22 +32,20 @@ export default async function handler(req: Request, context: Context): Promise<R
 
     const body = await response.text();
 
-    return new Response(body, {
-      status: response.status,
+    return {
+      statusCode: response.status,
       headers: {
-        "Content-Type": response.headers.get("Content-Type") || "application/json",
-        "Cache-Control": "public, max-age=60", // Cache responses for 60s
+        "Content-Type": "application/json",
+        "Cache-Control": "public, max-age=60",
         "Access-Control-Allow-Origin": "*",
       },
-    });
+      body,
+    };
   } catch (err) {
-    return new Response(JSON.stringify({ error: "Upstream request failed" }), {
-      status: 502,
+    return {
+      statusCode: 502,
+      body: JSON.stringify({ error: "Upstream request failed" }),
       headers: { "Content-Type": "application/json" },
-    });
+    };
   }
-}
-
-export const config = {
-  path: "/api/faceit/*",
 };
