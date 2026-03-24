@@ -201,24 +201,34 @@ export default function TabOneScreen() {
             {!isMobile && <ScrollIndicator onPress={scrollToPromo} />}
           </View>
 
-          {/* Promotional Section - Desktop/Tablet only */}
-          {!isMobile && (
-            <View style={[
-              styles.promoSection, 
-              isDesktop && styles.promoSectionDesktop
-            ]}>
-              <View style={[styles.promoContainer, isDesktop && styles.promoContainerDesktop]}>
+          {/* Promotional Section */}
+          <View style={[
+            styles.promoSection,
+            isMobile && styles.promoSectionMobile,
+            isDesktop && styles.promoSectionDesktop
+          ]}>
+              <View style={[
+                styles.promoContainer,
+                isMobile && styles.promoContainerMobile,
+                isDesktop && styles.promoContainerDesktop
+              ]}>
                 {/* Promo Content */}
-                <View style={[styles.promoContent, isDesktop && styles.promoContentDesktop]}>
+                <View style={[
+                  styles.promoContent,
+                  isMobile && styles.promoContentMobile,
+                  isDesktop && styles.promoContentDesktop
+                ]}>
                   <Text style={[
-                    styles.promoTitle, 
+                    styles.promoTitle,
+                    isMobile && styles.promoTitleMobile,
                     isDesktop && styles.promoTitleDesktop
                   ]}>
                     Your <Text style={styles.highlightText}>FACEIT</Text> data,{'\n'}
                     <Text style={styles.cleanText}>Clean</Text> mode.
                   </Text>
                   <Text style={[
-                    styles.promoTagline, 
+                    styles.promoTagline,
+                    isMobile && styles.promoTaglineMobile,
                     isDesktop && styles.promoTaglineDesktop
                   ]}>
                     Track your ELO, analyze match history, and monitor your performance. All your Counter-Strike 2 statistics in one sleek mobile app.
@@ -228,7 +238,8 @@ export default function TabOneScreen() {
                   <View style={[styles.storeButtons, !isDesktop && styles.storeButtonsMobile]}>
                     <Pressable 
                       style={[
-                        styles.storeBtn, 
+                        styles.storeBtn,
+                        isMobile && styles.storeBtnMobile,
                         clickedStore === 'apple' && styles.storeBtnClicked
                       ]} 
                       onPress={() => handleStorePress('apple')}
@@ -250,7 +261,8 @@ export default function TabOneScreen() {
                     </Pressable>
                     <Pressable 
                       style={[
-                        styles.storeBtn, 
+                        styles.storeBtn,
+                        isMobile && styles.storeBtnMobile,
                         clickedStore === 'google' && styles.storeBtnClicked
                       ]} 
                       onPress={() => handleStorePress('google')}
@@ -274,23 +286,23 @@ export default function TabOneScreen() {
 
                   {/* Features */}
                   <View style={[styles.features, !isDesktop && styles.featuresMobile]}>
-                    <View style={styles.featureItem}>
-                      <View style={styles.featureIcon}>
+                    <View style={[styles.featureItem, isMobile && styles.featureItemMobile]}>
+                      <View style={[styles.featureIcon, isMobile && styles.featureIconMobile]}>
                         <Ionicons name="bar-chart-outline" size={18} color={Colors.dark.faceitOrange} />
                       </View>
-                      <Text style={styles.featureText}>Live Stats</Text>
+                      <Text style={[styles.featureText, isMobile && styles.featureTextMobile]}>Live Stats</Text>
                     </View>
-                    <View style={styles.featureItem}>
-                      <View style={styles.featureIcon}>
+                    <View style={[styles.featureItem, isMobile && styles.featureItemMobile]}>
+                      <View style={[styles.featureIcon, isMobile && styles.featureIconMobile]}>
                         <Ionicons name="time-outline" size={18} color={Colors.dark.faceitOrange} />
                       </View>
-                      <Text style={styles.featureText}>Match History</Text>
+                      <Text style={[styles.featureText, isMobile && styles.featureTextMobile]}>Match History</Text>
                     </View>
-                    <View style={styles.featureItem}>
-                      <View style={styles.featureIcon}>
+                    <View style={[styles.featureItem, isMobile && styles.featureItemMobile]}>
+                      <View style={[styles.featureIcon, isMobile && styles.featureIconMobile]}>
                         <Ionicons name="heart-outline" size={18} color={Colors.dark.faceitOrange} />
                       </View>
-                      <Text style={styles.featureText}>Favorites</Text>
+                      <Text style={[styles.featureText, isMobile && styles.featureTextMobile]}>Favorites</Text>
                     </View>
                   </View>
                 </View>
@@ -384,7 +396,6 @@ export default function TabOneScreen() {
                 )}
               </View>
             </View>
-          )}
 
           {/* Footer */}
           <View style={[styles.webFooter, isMobile && styles.webFooterMobile]}>
@@ -724,6 +735,9 @@ const styles = StyleSheet.create({
     width: '100%',
     alignSelf: 'center',
   },
+  promoContainerMobile: {
+    maxWidth: 420,
+  },
   promoContainerDesktop: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -734,6 +748,10 @@ const styles = StyleSheet.create({
     flex: 1,
     maxWidth: 520,
     alignItems: 'center',
+  },
+  promoContentMobile: {
+    maxWidth: 420,
+    alignSelf: 'center',
   },
   promoContentDesktop: {
     alignItems: 'flex-start',

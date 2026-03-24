@@ -252,6 +252,7 @@ const styles = StyleSheet.create({
   leftSection: {
     flex: 1,
     marginRight: 10,
+    minWidth: 0,
   },
   map: {
     fontSize: 15,
@@ -292,6 +293,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'center',
     marginLeft: 5,
+    minWidth: 72,
   },
   statRow: {
     flexDirection: 'row',

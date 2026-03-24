@@ -5,6 +5,7 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
+import { Platform } from 'react-native';
 
 import { useColorScheme } from '@/components/useColorScheme';
 
@@ -25,11 +26,12 @@ import { AnimatedSplashScreen } from '@/components/AnimatedSplashScreen';
 import { useState } from 'react';
 
 export default function RootLayout() {
+  const isWeb = Platform.OS === 'web';
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome.font,
   });
-  const [splashAnimationFinished, setSplashAnimationFinished] = useState(false);
+  const [splashAnimationFinished, setSplashAnimationFinished] = useState(isWeb);
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {

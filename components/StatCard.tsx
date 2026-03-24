@@ -133,6 +133,8 @@ const styles = StyleSheet.create({
     margin: 4,
     borderRadius: 10,
     minWidth: 80,
+    width: '47%',
+    flexBasis: '47%',
   },
   containerDesktop: {
     padding: 24,

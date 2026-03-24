@@ -213,8 +213,8 @@ export default function PlayerStatsScreen() {
               isWeb && isDesktop && styles.avatarDesktop
             ]}
           />
-          <View style={styles.playerInfo}>
-            <View style={styles.nameRow}>
+          <View style={[styles.playerInfo, isWeb && isMobile && styles.playerInfoMobile]}>
+            <View style={[styles.nameRow, isWeb && isMobile && styles.nameRowMobile]}>
               <Text style={[
                 styles.nickname, 
                 isWeb && isMobile && styles.nicknameMobile,
@@ -302,7 +302,7 @@ export default function PlayerStatsScreen() {
         isWeb && isMobile && styles.historySectionMobile,
         isWeb && isDesktop && styles.historySectionDesktop
       ]}>
-        <View style={styles.sectionHeader}>
+        <View style={[styles.sectionHeader, isWeb && isMobile && styles.sectionHeaderMobile]}>
           <Text style={[styles.sectionTitle, isWeb && isMobile && styles.sectionTitleMobile]}>Match History</Text>
           {history.length > 0 && (
             <Text style={[styles.matchCount, isWeb && isMobile && styles.matchCountMobile]}>
@@ -607,6 +607,8 @@ const styles = StyleSheet.create({
   },
   headerContentMobile: {
     padding: 14,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
   },
   avatar: {
     width: 80,
@@ -633,11 +635,18 @@ const styles = StyleSheet.create({
   playerInfo: {
     flex: 1,
   },
+  playerInfoMobile: {
+    width: '100%',
+  },
   nameRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
     marginBottom: 12,
+  },
+  nameRowMobile: {
+    flexWrap: 'wrap',
+    rowGap: 8,
   },
   nickname: {
     fontSize: 24,
@@ -666,6 +675,7 @@ const styles = StyleSheet.create({
   },
   badgesRowMobile: {
     gap: 8,
+    flexWrap: 'wrap',
   },
   levelIcon: {
     width: 36,
@@ -763,6 +773,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 16,
+  },
+  sectionHeaderMobile: {
+    alignItems: 'flex-start',
+    gap: 6,
   },
   matchCount: {
     fontSize: 12,
